@@ -55,10 +55,7 @@ def load_data(file_path: str) -> pd.DataFrame:
 def train_model(X_train: np.ndarray, y_train: np.ndarray, params: dict) -> GradientBoostingClassifier:
     """Train the Gradient Boosting model."""
     try:
-        clf = GradientBoostingClassifier(
-            n_estimators=params['n_estimators'],
-            learning_rate=params['learning_rate']
-        )
+        clf = GradientBoostingClassifier(n_estimators=params['n_estimators'], learning_rate=params['learning_rate'])
         clf.fit(X_train, y_train)
         logger.debug('Model training completed')
         return clf
@@ -80,12 +77,12 @@ def main():
     try:
         params = load_params('params.yaml')['model_building']
 
-        train_data = load_data('./data/processed/train_bow.csv')  # Updated here
+        train_data = load_data('./data/processed/train_tfidf.csv')
         X_train = train_data.iloc[:, :-1].values
         y_train = train_data.iloc[:, -1].values
 
         clf = train_model(X_train, y_train, params)
-
+        
         save_model(clf, 'models/model.pkl')
     except Exception as e:
         logger.error('Failed to complete the model building process: %s', e)
